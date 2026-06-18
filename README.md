@@ -5,7 +5,7 @@
 [![CI](https://github.com/igorjs/gh-actions-clean-workflow/actions/workflows/ci.yml/badge.svg)](https://github.com/igorjs/gh-actions-clean-workflow/actions/workflows/ci.yml)
 [![Check Dist](https://github.com/igorjs/gh-actions-clean-workflow/actions/workflows/check-dist.yml/badge.svg)](https://github.com/igorjs/gh-actions-clean-workflow/actions/workflows/check-dist.yml)
 [![Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/igorjs/gh-actions-clean-workflow/gh-pages/badges/coverage.json)](https://github.com/igorjs/gh-actions-clean-workflow/actions/workflows/coverage-badge.yml)
-[![CodeQL](https://github.com/igorjs/gh-actions-clean-workflow/actions/workflows/scorecard.yml/badge.svg)](https://github.com/igorjs/gh-actions-clean-workflow/actions/workflows/scorecard.yml)
+[![OpenSSF Scorecard](https://github.com/igorjs/gh-actions-clean-workflow/actions/workflows/scorecard.yml/badge.svg)](https://github.com/igorjs/gh-actions-clean-workflow/actions/workflows/scorecard.yml)
 [![Marketplace](https://img.shields.io/badge/Marketplace-Clean%20Workflow%20Action-blue?logo=github)](https://github.com/marketplace/actions/clean-workflow-action)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%E2%89%A526-brightgreen.svg)](package.json)
