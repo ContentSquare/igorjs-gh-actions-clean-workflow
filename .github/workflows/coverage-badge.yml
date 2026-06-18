@@ -1,0 +1,69 @@
+# Generate a Shields.io endpoint JSON badge from the coverage summary,
+# publish it to the gh-pages branch under badges/coverage.json. Referenced
+# in README.md as a Shields endpoint badge. Replaces the previous Codecov
+# integration; coverage thresholds are still enforced by vitest.config.ts.
+name: Coverage Badge
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: coverage-badge
+  cancel-in-progress: true
+
+jobs:
+  badge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        with:
+          node-version: 26
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run tests with coverage
+        run: pnpm run test:coverage
+
+      - name: Build badge JSON
+        run: |
+          mkdir -p _badges
+          PCT=$(node -e "console.log(require('./coverage/coverage-summary.json').total.lines.pct)")
+          PCT_INT=${PCT%.*}
+          if   [ "$PCT_INT" -ge 90 ]; then COLOR=brightgreen
+          elif [ "$PCT_INT" -ge 80 ]; then COLOR=green
+          elif [ "$PCT_INT" -ge 70 ]; then COLOR=yellowgreen
+          elif [ "$PCT_INT" -ge 60 ]; then COLOR=yellow
+          elif [ "$PCT_INT" -ge 50 ]; then COLOR=orange
+          else                              COLOR=red
+          fi
+          printf '{"schemaVersion":1,"label":"coverage","message":"%s%%","color":"%s"}\n' "$PCT" "$COLOR" \
+            > _badges/coverage.json
+          cat _badges/coverage.json
+
+      - name: Publish badge to gh-pages
+        uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e # v4.0.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./_badges
+          destination_dir: badges
+          keep_files: true
+          commit_message: "chore: update coverage badge"
+          user_name: "github-actions[bot]"
+          user_email: "41898282+github-actions[bot]@users.noreply.github.com"
